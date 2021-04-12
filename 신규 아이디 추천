@@ -1,0 +1,48 @@
+//정규표현식을 부분적으로 사용하여 품
+
+import java.util.regex.*;
+
+public class newIDrecommend {
+
+	public static void main(String[] args) {
+		String new_id = "abcdefghijklmn.p";
+		String pattern = "[a-z0-9._-]"; // regex pattren
+		new_id = new_id.toLowerCase(); // 1단계
+		for (int i = 0; i < new_id.length(); i++) { 
+			String ch = new_id.substring(i, i + 1);
+			if (!Pattern.matches(pattern, ch)) {
+				new_id = new_id.replace(ch, "");
+				i--;
+			}
+		}
+		int cnt_dot = 0;
+		for (int i = 0; i < new_id.length(); i++) {  //2단계
+			String ch = new_id.substring(i, i + 1);
+			if (ch.equals(".")) {
+				if(cnt_dot == 1) {
+					new_id = new_id.substring(0, i) + new_id.substring(i+1);
+					cnt_dot = 0;
+					i-=2;
+				}
+				else
+					cnt_dot++;
+			}
+			else
+				cnt_dot = 0;
+		}
+		if(new_id.startsWith(".")) //4단계
+			new_id=new_id.substring(1);
+		if(new_id.endsWith(".")) //4단계
+			new_id=new_id.substring(0,new_id.length()-1);
+		if(new_id.isEmpty())  //5단계
+			new_id = "a";
+		if(new_id.length()>15) { //6단계
+			new_id = new_id.substring(0, 15);
+			if(new_id.endsWith(".")) //4단계 다시 실행
+				new_id=new_id.substring(0,new_id.length()-1);
+		}
+		while(new_id.length() < 3)
+			new_id = new_id + new_id.substring(new_id.length()-1, new_id.length());
+		System.out.println(new_id);
+	}
+}
