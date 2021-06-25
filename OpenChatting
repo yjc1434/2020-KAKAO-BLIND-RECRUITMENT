@@ -1,0 +1,45 @@
+import java.util.HashMap;
+import java.util.ArrayList;
+
+class Solution {
+//record = ["Enter uid1234 Muzi", "Enter uid4567 Prodo","Leave uid1234","Enter uid1234 Prodo","Change uid4567 Ryan"]
+//result = ["Prodo님이 들어왔습니다.", "Ryan님이 들어왔습니다.", "Prodo님이 나갔습니다.", "Prodo님이 들어왔습니다."]
+    public String[] solution(String[] record) {
+        String[] split;
+        String[] answer;
+		String result;
+		HashMap<String,String> map = new HashMap<>();
+		ArrayList<String> list = new ArrayList<String>();
+		
+		for (String rcd : record) {
+			split = rcd.split(" ");
+			if (split[0].equals("Enter")) {
+				map.put(split[1], split[2]);
+			}
+			else if (split[0].equals("Change")) {
+				map.put(split[1], split[2]);
+			}
+		}
+		
+		for (String rcd : record) {
+			split = rcd.split(" ");
+			if (split[0].equals("Enter")) {
+				if(map.containsKey(split[1])) {
+					result = map.get(split[1]) + "님이 들어왔습니다.";
+					list.add(result);
+				}
+			}
+			else if (split[0].equals("Leave")) {
+					result = map.get(split[1]) + "님이 나갔습니다.";
+					list.add(result);
+			}
+		}
+		
+        answer = new String[list.size()];
+		for (int i = 0; i < list.size(); i++) {
+			answer[i] = list.get(i);
+		}
+        
+		return answer;
+    }
+}
